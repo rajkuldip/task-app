@@ -1,0 +1,17 @@
+{
+    "name": "@my-monorepo/database-scripts",
+    "version": "1.0.0",
+    "description": "Scripts for local DynamoDB setup and management",
+    "main": "create-tasks-table.js",
+    "private": true,
+    "scripts": {
+        "create-table": "node create-tasks-table.js"
+    },
+    "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.x.x",
+        "@aws-sdk/lib-dynamodb": "^3.x.x"
+    },
+    "devDependencies": {
+        "dotenv": "^16.x.x"
+    }
+}

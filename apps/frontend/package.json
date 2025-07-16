@@ -1,0 +1,28 @@
+{
+    "name": "@my-monorepo/frontend",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev -p 3000",
+        "build": "next build",
+        "start": "next start -p 3000",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "react": "^18",
+        "react-dom": "^18",
+        "next": "14.x.x",
+        "styled-components": "^6.x.x",
+        "zustand": "^4.x.x",
+        "@my-monorepo/components": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "@types/styled-components": "^5.x.x",
+        "eslint": "^8",
+        "eslint-config-next": "14.x.x",
+        "typescript": "^5"
+    }
+}

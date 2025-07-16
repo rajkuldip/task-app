@@ -1,0 +1,20 @@
+{
+    "name": "@my-monorepo/components",
+    "version": "0.0.1",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "license": "MIT",
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch"
+    },
+    "dependencies": {
+        "react": "^18.x.x",
+        "styled-components": "^6.x.x"
+    },
+    "devDependencies": {
+        "@types/react": "^18.x.x",
+        "@types/styled-components": "^5.x.x",
+        "typescript": "^5.x.x"
+    }
+}

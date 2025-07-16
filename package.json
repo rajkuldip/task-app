@@ -1,0 +1,18 @@
+{
+    "name": "my-monorepo",
+    "version": "1.0.0",
+    "description": "Monorepo for Microfrontend Application",
+    "private": true,
+    "scripts": {
+        "task-app": "pnpm run start:db & pnpm --filter @my-monorepo/backend dev & pnpm --filter @my-monorepo/frontend dev & pnpm --filter @my-monorepo/components dev",
+        "start:db": "docker-compose -f ./database/local-dynamodb/docker-compose.yml up",
+        "create-db-tables": "pnpm --filter @my-monorepo/database-scripts create-table",
+        "clean:node_modules": "pnpm recursive exec rm -rf node_modules",
+        "install:all": "pnpm install",
+        "build:all": "pnpm recursive exec pnpm build",
+        "lint:all": "pnpm recursive exec pnpm lint"
+    },
+    "devDependencies": {
+        "typescript": "^5.x.x"
+    }
+}

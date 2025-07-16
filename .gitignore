@@ -1,0 +1,30 @@
+# my-monorepo/.gitignore
+
+# Node modules
+node_modules
+**/*/node_modules
+.pnpm-store/ # pnpm specific store
+
+# Build artifacts
+.next/
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+
+
+# Logs
+npm-debug.log*
+.pnpm-debug.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Docker volumes for local development
+database/local-dynamodb/docker/
