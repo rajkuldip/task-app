@@ -18,6 +18,48 @@ This is a modern task management application built with Next.js, React, and styl
 
 ---
 
+## Micro Frontend Architecture Overview
+This project follows modern Micro Frontend architecture principles to enable modular, scalable, and independently deployable frontend and backend applications within a monorepo structure.
+
+### Key Architectural Features
+#### Monorepo Structure:
+The repository is organized using pnpm workspaces into multiple packages and apps:
+```
+- **/** (root)
+  - `apps/`
+    - `frontend/` – Next.js frontend app
+    - `backend/` – Next.js backend/API server
+  - `packages/`
+    - `components/` – Shared React UI components
+  - `database/` – Database schema and related code
+  - `pnpm-workspace.yaml`
+  - `package.json`
+  - `README.md`
+```
+
+#### Domain-Driven Modularization:
+Each app (frontend, backend) and package (components) represents a distinct domain or responsibility, allowing isolated development and maintenance.
+
+#### Isolated Deployability:
+The frontend and backend apps can be built, tested, and deployed independently, enabling faster release cycles and better scalability.
+
+#### Shared Component Library:
+Common UI elements and utilities are placed in the packages/components package, promoting code reuse and consistent design across apps.
+
+#### Technology Agnostic Boundaries:
+The architecture supports multiple frontend or backend frameworks if needed, allowing future integration of additional micro frontends or services.
+
+### Benefits of This Architecture
+**Scalability:** Easily add new apps or services without impacting existing ones.
+
+**Independent Development:** Teams can work autonomously on different domains or apps.
+
+**Better Maintainability:** Clear separation of concerns reduces codebase complexity.
+
+**Flexible Deployment:** Deploy parts of the system separately for faster iteration.
+
+---
+
 ## Getting Started
 
 Follow these steps to set up and run the application.
