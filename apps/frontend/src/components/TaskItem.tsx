@@ -11,7 +11,7 @@ interface TaskCardProps {
 
 
 const TaskCard = styled.div<TaskCardProps>`
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.surface};;
   padding: ${({ theme }) => theme.spacing.medium};
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: ${({ theme }) => theme.boxShadow};
@@ -60,10 +60,10 @@ const DetailItem = styled.span`
   display: flex;
   align-items: center;
   gap: 4px;
-  background-color: #f8f9fa;
+  background-color: ${({ theme }) => theme.colors.background};
   padding: 4px 8px;
   border-radius: 4px;
-  border: 1px solid #e9ecef;
+  border: 1px solid ${({ theme }) => theme.colors.border}; 
 `;
 
 const ActionButtons = styled.div`
@@ -89,14 +89,14 @@ const ActionButton = styled.button<{ $variant?: 'edit' | 'delete' }>`
                 return `
           color: ${theme.colors.primary};
           &:hover {
-            background-color: rgba(0, 112, 243, 0.1);
+            background-color: ${theme.colors.border};
           }
         `;
             case 'delete':
                 return `
           color: ${theme.colors.danger};
           &:hover {
-            background-color: rgba(220, 53, 69, 0.1);
+            background-color: ${theme.colors.border}; 
           }
         `;
             default:

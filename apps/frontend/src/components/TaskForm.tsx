@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Task, TaskInput, TaskPriority, TaskStatus } from '@/types/task';
-import { FaCross } from 'react-icons/fa6';
+import { FaXmark } from 'react-icons/fa6';
 import { MdSave } from 'react-icons/md';
 
 const Form = styled.form`
@@ -31,10 +31,12 @@ const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius};
   font-size: 1rem;
+  background-color: ${({ theme }) => theme.colors.surface}; /* Ensure input background also changes */
+  color: ${({ theme }) => theme.colors.text}; /* Ensure input text color also changes */
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary}40; /* Using hex code with alpha for consistent primary shadow */
   }
 `;
 
@@ -45,10 +47,12 @@ const TextArea = styled.textarea`
   font-size: 1rem;
   min-height: 80px;
   resize: vertical;
+  background-color: ${({ theme }) => theme.colors.surface}; /* Ensure textarea background also changes */
+  color: ${({ theme }) => theme.colors.text}; /* Ensure textarea text color also changes */
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary}40; /* Using hex code with alpha for consistent primary shadow */
   }
 `;
 
@@ -57,12 +61,13 @@ const Select = styled.select`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius};
   font-size: 1rem;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text}; /* Ensure select text color also changes */
   cursor: pointer;
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary}40; /* Using hex code with alpha for consistent primary shadow */
   }
 `;
 
@@ -82,6 +87,8 @@ const StyledButton = styled.button<{ $variant?: 'primary' | 'secondary' | 'dange
   align-items: center;
   gap: ${({ theme }) => theme.spacing.small};
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  cursor: pointer; /* Added cursor pointer for all buttons */
+  border: none; /* Ensure no default button border interferes */
 
   ${({ $variant, theme }) => {
         switch ($variant) {
@@ -98,17 +105,20 @@ const StyledButton = styled.button<{ $variant?: 'primary' | 'secondary' | 'dange
           background-color: ${theme.colors.danger};
           color: white;
           &:hover {
-            background-color: #c82333; /* Darker red */
+            background-color: ${theme.colors.danger}; /* Hover should probably darken, not go to border */
+            filter: brightness(85%); /* Example: slightly darker on hover */
           }
         `;
             case 'secondary':
             default:
                 return `
-          background-color: #e0e0e0;
+          // --- CHANGE THESE LINES ---
+          background-color: ${theme.colors.border}; /* Use themed background for secondary */
           color: ${theme.colors.text};
           &:hover {
-            background-color: #d0d0d0;
+            background-color: ${theme.colors.lightText}; /* Use a slightly darker themed color for hover */
           }
+          // -------------------------
         `;
         }
     }}
@@ -167,7 +177,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ initialData, onSubmit, onCan
                     value={formData.title}
                     onChange={handleChange}
                     required
-                    placeholder="e.g., Buy groceries"
+                    placeholder="Enter task title"
                 />
             </FormGroup>
             <FormGroup>
@@ -177,7 +187,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ initialData, onSubmit, onCan
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
-                    placeholder="e.g., Milk, eggs, bread..."
+                    placeholder="Enter description"
                 />
             </FormGroup>
             <FormGroup>
@@ -219,7 +229,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ initialData, onSubmit, onCan
             </FormGroup>
             <ButtonGroup>
                 <StyledButton type="button" onClick={onCancel} $variant="secondary" disabled={isSubmitting}>
-                    <FaCross /> Cancel
+                    <FaXmark /> Cancel
                 </StyledButton>
                 <StyledButton type="submit" $variant="primary" disabled={isSubmitting}>
                     <MdSave /> {isSubmitting ? 'Saving...' : (initialData ? 'Update Task' : 'Create Task')}

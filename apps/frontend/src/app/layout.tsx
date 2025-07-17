@@ -3,9 +3,14 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from '../styles/GlobalStyles';
-import { theme } from '../styles/theme';
+import { lightTheme, darkTheme } from '../styles/theme';
+import { useThemeStore } from '@/lib/store/themeStore';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const themeMode = useThemeStore((state) => state.themeMode);
+
+  const currentTheme = themeMode === 'light' ? lightTheme : darkTheme;
+
   return (
     <html lang="en">
       <head>
@@ -13,8 +18,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <ThemeProvider theme={theme}>
-          <GlobalStyles theme={theme} />
+        <ThemeProvider theme={currentTheme}>
+          <GlobalStyles theme={currentTheme} />
           {children}
         </ThemeProvider>
       </body>

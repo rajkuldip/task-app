@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { FaCross } from 'react-icons/fa6';
+import { FaXmark } from 'react-icons/fa6';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -18,10 +18,11 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.surface};
   padding: ${({ theme }) => theme.spacing.large};
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: ${({ theme }) => theme.boxShadow};
+  color: ${({ theme }) => theme.colors.text};
   position: relative;
   max-width: 90%;
   max-height: 90%;
@@ -78,7 +79,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         <ModalOverlay onClick={onClose}>
             <ModalContent ref={modalRef} onClick={(e) => e.stopPropagation()}>
                 <CloseButton onClick={onClose}>
-                    <FaCross />
+                    <FaXmark />
                 </CloseButton>
                 {children}
             </ModalContent>

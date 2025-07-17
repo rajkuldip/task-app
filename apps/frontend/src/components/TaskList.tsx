@@ -7,7 +7,6 @@ import { TaskItem } from './TaskItem';
 
 const ListContainer = styled.div`
   width: 100%;
-  max-width: 700px;
   margin: ${({ theme }) => theme.spacing.large} 0;
 `;
 
@@ -22,13 +21,13 @@ const EmptyState = styled.p`
 
 interface TaskListProps {
     tasks: Task[];
-    onEditTask: (task: Task) => void;
-    onDeleteTask: (id: string) => void;
-    loading: boolean;
-    error: string | null;
+    onEdit: (task: Task) => void;
+    onDelete: (id: string) => Promise<void>;
+    loading?: boolean;
+    error?: string | null;
 }
 
-export const TaskList: React.FC<TaskListProps> = ({ tasks, onEditTask, onDeleteTask, loading, error }) => {
+export const TaskList: React.FC<TaskListProps> = ({ tasks, onEdit, onDelete, loading, error }) => {
     if (loading) {
         return <EmptyState>Loading tasks...</EmptyState>;
     }
@@ -44,7 +43,12 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, onEditTask, onDeleteT
     return (
         <ListContainer>
             {tasks.map((task, index) => (
-                <TaskItem key={`${task.id}_${index}`} task={task} onEdit={onEditTask} onDelete={onDeleteTask} />
+                <TaskItem
+                    key={`${task.id}_${index}`}
+                    task={task}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ))}
         </ListContainer>
     );

@@ -7,11 +7,13 @@ interface TaskState {
     loading: boolean;
     error: string | null;
     filters: TaskFilter;
-    fetchTasks: () => Promise<void>;
+
+    fetchTasks: (filters?: TaskFilter) => Promise<void>;
     setFilter: (filter: Partial<TaskFilter>) => void;
-    addTask: (task: TaskInput) => Promise<void>;
-    editTask: (id: string, task: Partial<TaskInput>) => Promise<void>;
-    removeTask: (id: string) => Promise<void>;
+
+    createTask: (task: TaskInput) => Promise<void>;
+    updateTask: (id: string, task: Partial<TaskInput>) => Promise<void>;
+    deleteTask: (id: string) => Promise<void>;
 }
 
 export const useTaskStore = create<TaskState>((set, get) => ({
@@ -20,10 +22,10 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     error: null,
     filters: {},
 
-    fetchTasks: async () => {
+    fetchTasks: async (filters) => {
         set({ loading: true, error: null });
         try {
-            const currentFilters = get().filters;
+            const currentFilters = filters !== undefined ? filters : get().filters;
             const data = await fetchTasksApi(currentFilters);
             set({ tasks: data, loading: false });
         } catch (error: any) {
@@ -36,10 +38,10 @@ export const useTaskStore = create<TaskState>((set, get) => ({
         set(state => ({
             filters: { ...state.filters, ...newFilter },
         }));
-        get().fetchTasks();
+        get().fetchTasks(get().filters);
     },
 
-    addTask: async (task: TaskInput) => {
+    createTask: async (task: TaskInput) => {
         set({ loading: true, error: null });
         try {
             const newTask = await createTaskApi(task);
@@ -48,13 +50,13 @@ export const useTaskStore = create<TaskState>((set, get) => ({
                 loading: false,
             }));
         } catch (error: any) {
-            console.error('Failed to add task:', error);
-            set({ error: error.message || 'Failed to add task', loading: false });
+            console.error('Failed to create task:', error);
+            set({ error: error.message || 'Failed to create task', loading: false });
             throw error;
         }
     },
 
-    editTask: async (id: string, task: Partial<TaskInput>) => {
+    updateTask: async (id: string, task: Partial<TaskInput>) => {
         set({ loading: true, error: null });
         try {
             const updatedTask = await updateTaskApi(id, task);
@@ -63,13 +65,13 @@ export const useTaskStore = create<TaskState>((set, get) => ({
                 loading: false,
             }));
         } catch (error: any) {
-            console.error('Failed to edit task:', error);
-            set({ error: error.message || 'Failed to edit task', loading: false });
+            console.error('Failed to update task:', error);
+            set({ error: error.message || 'Failed to update task', loading: false });
             throw error;
         }
     },
 
-    removeTask: async (id: string) => {
+    deleteTask: async (id: string) => {
         set({ loading: true, error: null });
         try {
             await deleteTaskApi(id);
@@ -78,9 +80,9 @@ export const useTaskStore = create<TaskState>((set, get) => ({
                 loading: false,
             }));
         } catch (error: any) {
-            console.error('Failed to remove task:', error);
-            set({ error: error.message || 'Failed to remove task', loading: false });
+            console.error('Failed to delete task:', error);
+            set({ error: error.message || 'Failed to delete task', loading: false });
             throw error;
         }
     },
-}));                    
+}));
