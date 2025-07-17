@@ -15,8 +15,8 @@ const PageContainer = styled.div`
   max-width: 900px;
   margin: ${({ theme }) => theme.spacing.xlarge} auto;
   padding: ${({ theme }) => theme.spacing.medium};
-  background-color: ${({ theme }) => theme.colors.background}; /* This will change */
-  color: ${({ theme }) => theme.colors.text}; /* This will change */
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const Header = styled.div`
@@ -24,8 +24,8 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: ${({ theme }) => theme.spacing.large};
-  flex-wrap: wrap; // Allow wrapping on smaller screens
-  gap: ${({ theme }) => theme.spacing.medium}; // Add gap for spacing between items
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing.medium};
 `;
 
 const Title = styled.h1`
@@ -35,14 +35,14 @@ const Title = styled.h1`
 
 const RightControls = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.medium}; /* Spacing between the toggle and add button */
-  align-items: center; /* Align items vertically in the middle */
-  flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+  gap: ${({ theme }) => theme.spacing.medium};
+  align-items: center;
+  flex-wrap: wrap;
 `;
 
 const AddTaskButton = styled.button`
   background-color: ${({ theme }) => theme.colors.primary};
-  color: white; // Text color remains white for primary button
+  color: white;
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: ${({ theme }) => theme.spacing.small} ${({ theme }) => theme.spacing.medium};
@@ -54,7 +54,7 @@ const AddTaskButton = styled.button`
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.secondary}; // Or a darker primary
+    background-color: ${({ theme }) => theme.colors.secondary};
   }
 `;
 
@@ -64,7 +64,6 @@ export default function HomePage() {
     const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [filters, setFilters] = useState<TaskFilter>({});
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
         fetchTasks(filters);

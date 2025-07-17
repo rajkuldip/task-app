@@ -148,7 +148,7 @@ export const FilterSortControls: React.FC<FilterSortControlsProps> = ({ filters,
         />
       </FilterGroup>
 
-      <ClearButton onClick={onClearFilters}>
+      <ClearButton onClick={onClearFilters} aria-label="Clear all filters">
         <FaXmark /> Clear Filters
       </ClearButton>
     </ControlsContainer>

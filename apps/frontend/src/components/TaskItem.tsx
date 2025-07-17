@@ -126,10 +126,10 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, onEdit, onDelete }) =>
             <TaskHeader>
                 <TaskTitle>{task.title}</TaskTitle>
                 <ActionButtons>
-                    <ActionButton onClick={() => onEdit(task)} $variant="edit" title="Edit Task">
+                    <ActionButton onClick={() => onEdit(task)} $variant="edit" title="Edit Task" aria-label="Edit task">
                         <FaPen />
                     </ActionButton>
-                    <ActionButton onClick={() => onDelete(task.id)} $variant="delete" title="Delete Task">
+                    <ActionButton onClick={() => onDelete(task.id)} $variant="delete" title="Delete Task" aria-label="Delete task">
                         <FaTrash />
                     </ActionButton>
                 </ActionButtons>

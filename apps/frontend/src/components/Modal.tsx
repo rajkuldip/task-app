@@ -82,10 +82,10 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title, 
     return (
         <ModalOverlay onClick={onClose}>
             <ModalContent ref={modalRef} onClick={(e) => e.stopPropagation()} aria-modal="true" aria-labelledby={title ? titleId : undefined} {...(testId && { 'data-testid': testId })} >
-                <CloseButton onClick={onClose}>
+                <CloseButton onClick={onClose} aria-label="Close modal">
                     <FaXmark />
                 </CloseButton>
-                {title && <h2 id={titleId}>{title}</h2>}
+
                 {children}
             </ModalContent>
         </ModalOverlay>
