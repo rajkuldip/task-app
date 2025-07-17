@@ -30,9 +30,12 @@
             ],
             "@my-monorepo/components/*": [
                 "../../packages/components/src/*"
+            ],
+            "@/*": [
+                "./src/*"
             ]
         },
-        "baseUrl": "."
+        "baseUrl": ".",
     },
     "include": [
         "next-env.d.ts",

@@ -1,19 +1,23 @@
-export const metadata = {
-  title: 'Task App POC',
-  description: 'This poc is created using NextJs under PNPM Workspace making use of AWS cloud.',
-}
+'use client';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+import React from 'react';
+import { ThemeProvider } from 'styled-components';
+import { GlobalStyles } from '../styles/GlobalStyles';
+import { theme } from '../styles/theme';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <title>Task App POC</title>
+        <title>Task Management App</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body>{children}</body>
+      <body>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles theme={theme} />
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
-  )
+  );
 }
