@@ -43,15 +43,21 @@ Make sure you have these installed:
     pnpm install
     ```
 
-3.  **Create database environment variables:**
-    Create a file named `.env` in the `database/` directory:
+3.  **Set up Environment Variables:**
+    This project uses environment variables for configuration. You'll find `.env.example` files in the following directories:
+    * `/backend`
+    * `/database`
+
+    For local development, **copy the `.env.example` file from each of these directories to a new file named `.env.local`** in the *same* directory. Then, populate these `.env.local` files with your actual credentials or configurations (e.g., AWS keys, database endpoints).
+
+    For example, in `/backend`, copy `backend/.env.example` to `backend/.env.local`.
+    ```bash
+    cp backend/.env.example backend/.env.local
+    cp database/.env.example database/.env
     ```
-    # database/.env
-    AWS_ACCESS_KEY_ID=accessKeyId
-    AWS_SECRET_ACCESS_KEY=accessKey
-    AWS_REGION=region
-    DYNAMODB_ENDPOINT=http://localhost:8000
-    ```
+
+    Make sure to fill in the necessary values in your `.env and .env.local` files.
+    
 
 ### 3. Running the Application
 
