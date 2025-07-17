@@ -1,6 +1,22 @@
-# My Monorepo App
+# Task Management Application
 
-This is a monorepo containing a Next.js frontend, a Next.js backend API, a shared React components library, and a local DynamoDB setup.
+This is a modern task management application built with Next.js, React, and styled-components, designed with a focus on accessibility and a robust project structure.
+
+---
+
+## Features
+
+* **Task Management:** Create, read, update, and delete tasks.
+* **Filtering & Sorting:** Efficiently organize tasks by applying various filters and sorting options (e.g., by status, priority, due date).
+* **Theming:** Supports light and dark modes for a personalized user experience.
+* **Responsive Design:** Optimized for various screen sizes, from mobile to desktop.
+* **Accessibility (A11y) Focused:**
+    * **Keyboard Navigation:** Enhanced keyboard accessibility, including "Skip to Content" links for efficient navigation.
+    * **ARIA Attributes:** Proper use of ARIA roles and attributes for semantic clarity for assistive technologies.
+    * **Semantic HTML:** Utilization of semantic HTML5 elements for improved structure and readability by screen readers.
+    * **Focus Management:** Careful handling of focus, especially within modal dialogs, to ensure a smooth user experience for keyboard users.
+
+---
 
 ## Getting Started
 
@@ -74,3 +90,12 @@ To clear local DynamoDB data and re-create tables:
 3.  Restart DynamoDB: `docker-compose up -d`
 
 ---
+
+## Testing
+
+The project includes unit tests using **React Testing Library** and **Jest** to ensure component functionality and user interaction flows.
+
+### Running Tests
+
+```bash
+pnpm --filter frontend test
