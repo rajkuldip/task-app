@@ -9,9 +9,7 @@ const ControlsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing.medium};
-  // --- CHANGE ---
-  background-color: ${({ theme }) => theme.colors.surface}; // Use themed surface color
-  // --------------
+  background-color: ${({ theme }) => theme.colors.surface}; 
   padding: ${({ theme }) => theme.spacing.medium};
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: ${({ theme }) => theme.boxShadow};
@@ -29,7 +27,7 @@ const FilterGroup = styled.div`
 const Label = styled.label`
   margin-bottom: ${({ theme }) => theme.spacing.small};
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.text}; // Already correctly themed
+  color: ${({ theme }) => theme.colors.text}; 
   display: flex;
   align-items: center;
   gap: 5px;
@@ -40,18 +38,13 @@ const Select = styled.select`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius};
   font-size: 1rem;
-  // --- CHANGE ---
-  background-color: ${({ theme }) => theme.colors.surface}; // Use themed surface color
-  color: ${({ theme }) => theme.colors.text}; // Ensure text color changes
-  // --------------
+  background-color: ${({ theme }) => theme.colors.surface}; 
+  color: ${({ theme }) => theme.colors.text}; 
   cursor: pointer;
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
-    // --- CHANGE ---
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary}40; // Use theme color with opacity
-    // --------------
-  }
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary};
 `;
 
 const Input = styled.input`
@@ -59,42 +52,34 @@ const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius};
   font-size: 1rem;
-  // --- ADD ---
-  background-color: ${({ theme }) => theme.colors.surface}; // Use themed surface color
-  color: ${({ theme }) => theme.colors.text}; // Ensure text color changes
-  // -----------
+  background-color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text}; 
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
-    // --- CHANGE ---
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary}40; // Use theme color with opacity
-    // --------------
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary};
   }
 `;
 
 const ClearButton = styled.button`
-  // --- CHANGE ---
-  background-color: ${({ theme }) => theme.colors.border}; // Use theme.colors.border for a neutral background
-  color: ${({ theme }) => theme.colors.text}; // Ensure text color changes
-  // --------------
+  background-color: ${({ theme }) => theme.colors.border}; 
+  color: ${({ theme }) => theme.colors.text};
   padding: ${({ theme }) => theme.spacing.small} ${({ theme }) => theme.spacing.medium};
   border-radius: ${({ theme }) => theme.borderRadius};
   font-size: 1rem;
   font-weight: 600;
   transition: background-color 0.2s ease-in-out;
-  margin-top: auto; /* Push to bottom */
-  align-self: flex-end; /* Align with other inputs */
-  cursor: pointer; /* Ensure it's clickable */
-  border: none; /* Remove default button border */
+  margin-top: auto;
+  align-self: flex-end; 
+  cursor: pointer; 
+  border: none; 
   display: flex;
   align-items: center;
   svg {
   margin-right: 5px;
   }
   &:hover {
-    // --- CHANGE ---
-    background-color: ${({ theme }) => theme.colors.lightText}; // Use a slightly darker/different themed color for hover
-    // --------------
+    background-color: ${({ theme }) => theme.colors.lightText};
   }
 `;
 
@@ -121,12 +106,13 @@ export const FilterSortControls: React.FC<FilterSortControlsProps> = ({ filters,
   return (
     <ControlsContainer>
       <FilterGroup>
-        <Label htmlFor="statusFilter"><FaFilter /> Status</Label>
+        <Label htmlFor="statusFilter"><FaFilter />Status</Label>
         <Select
           id="statusFilter"
           name="status"
           value={filters.status || ''}
           onChange={handleSelectChange}
+          aria-label="Status filter"
         >
           <option value="">All</option>
           {statusOptions.map(option => (
@@ -142,6 +128,7 @@ export const FilterSortControls: React.FC<FilterSortControlsProps> = ({ filters,
           name="priority"
           value={filters.priority || ''}
           onChange={handleSelectChange}
+          aria-label="Priority filter"
         >
           <option value="">All</option>
           {priorityOptions.map(option => (

@@ -138,7 +138,7 @@ export default function HomePage() {
 
             <TaskList tasks={tasks} onEdit={handleEditTask} onDelete={handleDeleteTask} />
 
-            <Modal isOpen={isModalOpen} onClose={handleCancel}>
+            <Modal isOpen={isModalOpen} onClose={handleCancel} title={editingTask ? 'Edit Task' : 'Add New Task'} testId="task-form-modal">
                 <TaskForm
                     initialData={editingTask}
                     onSubmit={handleSubmit}

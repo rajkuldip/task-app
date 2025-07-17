@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useId } from 'react';
 import styled from 'styled-components';
 import { FaXmark } from 'react-icons/fa6';
 
@@ -52,10 +52,14 @@ interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
     children: React.ReactNode;
+    title?: string;
+    testId?: string;
 }
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title, testId }) => {
     const modalRef = useRef<HTMLDivElement>(null);
+
+    const titleId = useId();
 
     useEffect(() => {
         const handleEscape = (event: KeyboardEvent) => {
@@ -77,10 +81,11 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 
     return (
         <ModalOverlay onClick={onClose}>
-            <ModalContent ref={modalRef} onClick={(e) => e.stopPropagation()}>
+            <ModalContent ref={modalRef} onClick={(e) => e.stopPropagation()} aria-modal="true" aria-labelledby={title ? titleId : undefined} {...(testId && { 'data-testid': testId })} >
                 <CloseButton onClick={onClose}>
                     <FaXmark />
                 </CloseButton>
+                {title && <h2 id={titleId}>{title}</h2>}
                 {children}
             </ModalContent>
         </ModalOverlay>
