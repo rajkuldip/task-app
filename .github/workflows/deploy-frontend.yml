@@ -1,41 +1,41 @@
-name: Deploy Frontend to AWS S3 / CloudFront
+name: Deploy Frontend to S3 & CloudFront
 
 on:
   push:
     branches:
-      - main 
+      - main
     paths:
-      - 'frontend/**' 
+      - 'frontend/**'
   workflow_dispatch:
 
 permissions:
-  id-token: write 
-  contents: read 
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: frontend 
+        working-directory: frontend
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' 
+          node-version: '20'
           cache: 'pnpm' 
 
+      - name: Enable Corepack and Prepare pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate # Or pnpm@8 or pnpm@9 if you need a specific version
+
       - name: Install root dependencies (monorepo)
-        run: pnpm install --no-frozen-lockfile --shamefully-hoist
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build Frontend
         run: pnpm next build
