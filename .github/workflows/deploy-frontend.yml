@@ -30,7 +30,9 @@ jobs:
           cache: 'pnpm' 
 
       - name: Install pnpm
-        run: npm install -g pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
       - name: Install root dependencies (monorepo)
         run: pnpm install --no-frozen-lockfile --shamefully-hoist
