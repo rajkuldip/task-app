@@ -23,30 +23,37 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Debug PATH (Initial)
-        run: echo "Initial PATH: $PATH"
+      - name: Debug initial PATH
+        run: echo "PATH: $PATH"
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-
-      - name: Debug PATH (After pnpm setup)
-        run: |
-          echo "Updated PATH: $PATH"
-          which pnpm || echo "pnpm not found in PATH"
-
+      # First setup Node.js without pnpm caching
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'  # Now this will work since pnpm is installed
+          # Remove cache setting here to avoid early pnpm requirement
+          cache: 'npm'  # Temporary fallback to npm
+
+      - name: Install pnpm using corepack (built into Node.js)
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          pnpm --version
 
       - name: Verify installations
         run: |
-          node --version
-          npm --version
-          pnpm --version
+          echo "Node: $(node --version)"
+          echo "NPM: $(npm --version)"
+          echo "PNPM: $(pnpm --version)"
+          echo "Updated PATH: $PATH"
+          which pnpm || echo "pnpm not found in PATH"
+
+      # Now reconfigure node with pnpm caching
+      - name: Reconfigure Node.js with pnpm caching
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'  # Now this will work
 
       - name: Install root dependencies (monorepo)
         run: pnpm install --no-frozen-lockfile --shamefully-hoist
