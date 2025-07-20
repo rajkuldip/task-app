@@ -23,28 +23,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Debug PATH (Initial)
+        run: echo "Initial PATH: $PATH"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Debug PATH (After pnpm setup)
+        run: |
+          echo "Updated PATH: $PATH"
+          which pnpm || echo "pnpm not found in PATH"
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' 
-          cache: 'pnpm' 
+          node-version: '20'
+          cache: 'pnpm'  # Now this will work since pnpm is installed
 
-      - name: Debug PATH (Before pnpm install)
-        run: echo "Current PATH: $PATH"
-
-      - name: Install pnpm globally and add to PATH
+      - name: Verify installations
         run: |
-          npm install -g pnpm
-          echo "$(npm prefix -g)/bin" >> $GITHUB_PATH
-
-      - name: Debug PATH (After pnpm install)
-        run: echo "Updated PATH: $PATH"
-
-      - name: Find pnpm executable location
-        run: find / -name pnpm 2>/dev/null || echo "pnpm not found"
-
-      - name: Verify pnpm is available
-        run: pnpm --version
+          node --version
+          npm --version
+          pnpm --version
 
       - name: Install root dependencies (monorepo)
         run: pnpm install --no-frozen-lockfile --shamefully-hoist
