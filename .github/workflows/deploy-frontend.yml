@@ -17,27 +17,29 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: apps/frontend  
+        working-directory: apps/frontend
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Needed for pnpm workspace
+          fetch-depth: 0  
 
-      - name: Setup Node.js
+      - name: Setup Node.js (without caching)
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: false  
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Install pnpm using corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          echo "PNPM version: $(pnpm --version)"
+          echo "PNPM path: $(which pnpm)"
 
       - name: Install root dependencies
-        run: |
-          pnpm install --no-frozen-lockfile
-          echo "PNPM version: $(pnpm --version)"
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build Frontend
         run: pnpm build
