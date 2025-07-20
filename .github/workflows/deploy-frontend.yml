@@ -30,7 +30,13 @@ jobs:
         with:
           version: 8
 
-      - name: Cache pnpm modules
+      - name: Confirm pnpm is working
+        run: |
+          echo "PATH=$PATH"
+          which pnpm
+          pnpm -v
+
+      - name: Cache pnpm store
         uses: actions/cache@v4
         with:
           path: ~/.pnpm-store
@@ -38,14 +44,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-
 
-      - name: Install root dependencies (monorepo)
+      - name: Install root dependencies
         run: pnpm install --no-frozen-lockfile
 
       - name: Build frontend
         run: pnpm next build
         working-directory: frontend
 
-      - name: Configure AWS Credentials with IAM Role
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
@@ -55,5 +61,5 @@ jobs:
         run: aws s3 sync ./out/ s3://${{ secrets.S3_BUCKET_NAME }} --delete --acl public-read
         working-directory: frontend
 
-      - name: Invalidate CloudFront Cache
+      - name: Invalidate CloudFront
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
