@@ -15,9 +15,6 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
 
     steps:
       - name: Checkout repository
@@ -44,8 +41,9 @@ jobs:
       - name: Install root dependencies (monorepo)
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build Frontend
+      - name: Build frontend
         run: pnpm next build
+        working-directory: frontend
 
       - name: Configure AWS Credentials with IAM Role
         uses: aws-actions/configure-aws-credentials@v4
@@ -55,6 +53,7 @@ jobs:
 
       - name: Deploy to S3
         run: aws s3 sync ./out/ s3://${{ secrets.S3_BUCKET_NAME }} --delete --acl public-read
+        working-directory: frontend
 
       - name: Invalidate CloudFront Cache
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
