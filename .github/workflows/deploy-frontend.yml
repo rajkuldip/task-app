@@ -3,71 +3,46 @@ name: Deploy Frontend to AWS S3 / CloudFront
 on:
   push:
     branches:
-      - main 
+      - main
     paths:
-      - 'frontend/**' 
+      - 'apps/frontend/**'
   workflow_dispatch:
 
 permissions:
-  id-token: write 
-  contents: read 
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: frontend 
+        working-directory: apps/frontend  
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Needed for pnpm workspace
 
-      - name: Debug initial PATH
-        run: |
-          echo "Initial PATH: $PATH"
-
-      # Basic Node.js setup without any package manager caching
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          # Explicitly disable caching to avoid pnpm requirement
-          cache: false
+          cache: 'pnpm'
 
-      - name: Install pnpm using corepack
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install root dependencies
         run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+          pnpm install --no-frozen-lockfile
           echo "PNPM version: $(pnpm --version)"
-          echo "PNPM path: $(which pnpm)"
-
-      - name: Verify installations
-        run: |
-          echo "Node: $(node --version)"
-          echo "NPM: $(npm --version)"
-          echo "PNPM: $(pnpm --version)"
-          echo "Updated PATH: $PATH"
-
-      # Optional: Add pnpm caching in a separate step if needed
-      - name: Cache pnpm dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.pnpm-store
-            node_modules
-            .next
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
-      - name: Install root dependencies (monorepo)
-        run: pnpm install --no-frozen-lockfile --shamefully-hoist
 
       - name: Build Frontend
-        run: pnpm next build
+        run: pnpm build
 
-      - name: Configure AWS Credentials with IAM Role
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
