@@ -24,7 +24,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Debug initial PATH
-        run: echo "Initial PATH: $PATH"
+        run: |
+          echo "Initial PATH: $PATH"
 
       # Basic Node.js setup without any package manager caching
       - name: Set up Node.js
