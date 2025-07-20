@@ -27,12 +27,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm' 
 
       - name: Enable Corepack and Prepare pnpm
         run: |
           corepack enable
-          corepack prepare pnpm@latest --activate # Or pnpm@8 or pnpm@9 if you need a specific version
+          corepack prepare pnpm@latest --activate
+
+      - name: Cache pnpm modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Install root dependencies (monorepo)
         run: pnpm install --no-frozen-lockfile
