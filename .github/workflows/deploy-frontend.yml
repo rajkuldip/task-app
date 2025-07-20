@@ -29,10 +29,22 @@ jobs:
           node-version: '20' 
           cache: 'pnpm' 
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
+      - name: Debug PATH (Before pnpm install)
+        run: echo "Current PATH: $PATH"
+
+      - name: Install pnpm globally and add to PATH
+        run: |
+          npm install -g pnpm
+          echo "$(npm prefix -g)/bin" >> $GITHUB_PATH
+
+      - name: Debug PATH (After pnpm install)
+        run: echo "Updated PATH: $PATH"
+
+      - name: Find pnpm executable location
+        run: find / -name pnpm 2>/dev/null || echo "pnpm not found"
+
+      - name: Verify pnpm is available
+        run: pnpm --version
 
       - name: Install root dependencies (monorepo)
         run: pnpm install --no-frozen-lockfile --shamefully-hoist
