@@ -24,21 +24,22 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Debug initial PATH
-        run: echo "PATH: $PATH"
+        run: echo "Initial PATH: $PATH"
 
-      # First setup Node.js without pnpm caching
+      # Basic Node.js setup without any package manager caching
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          # Remove cache setting here to avoid early pnpm requirement
-          cache: 'npm'  # Temporary fallback to npm
+          # Explicitly disable caching to avoid pnpm requirement
+          cache: false
 
-      - name: Install pnpm using corepack (built into Node.js)
+      - name: Install pnpm using corepack
         run: |
           corepack enable
           corepack prepare pnpm@latest --activate
-          pnpm --version
+          echo "PNPM version: $(pnpm --version)"
+          echo "PNPM path: $(which pnpm)"
 
       - name: Verify installations
         run: |
@@ -46,14 +47,18 @@ jobs:
           echo "NPM: $(npm --version)"
           echo "PNPM: $(pnpm --version)"
           echo "Updated PATH: $PATH"
-          which pnpm || echo "pnpm not found in PATH"
 
-      # Now reconfigure node with pnpm caching
-      - name: Reconfigure Node.js with pnpm caching
-        uses: actions/setup-node@v4
+      # Optional: Add pnpm caching in a separate step if needed
+      - name: Cache pnpm dependencies
+        uses: actions/cache@v3
         with:
-          node-version: '20'
-          cache: 'pnpm'  # Now this will work
+          path: |
+            ~/.pnpm-store
+            node_modules
+            .next
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Install root dependencies (monorepo)
         run: pnpm install --no-frozen-lockfile --shamefully-hoist
